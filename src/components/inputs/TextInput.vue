@@ -7,12 +7,16 @@ import { handleFormat } from '@/utils/formatText'
 
 const props = defineProps({
     modelValue: {
-        type: String,
+        type: [String, Number],
         default: 'Default Text',
     },
     label: {
         type: String,
         default: 'Input Label',
+    },
+    inputType: {
+        type: String,
+        default: 'text',
     },
     format: {
         type: String,
@@ -66,7 +70,7 @@ watchEffect(() => {
         <input
             :name="inputName"
             :value="inputValue"
-            type="text"
+            :type="inputType"
             :maxlength="maxLength"
             :class="classes.inputClass"
             @input="($event) => handleInput($event, format)"

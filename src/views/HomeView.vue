@@ -1,69 +1,47 @@
 <script setup>
-// Components
+import { ref } from 'vue'
+import MissileSelect from '@/components/inputs/MissileSelect.vue'
+// Data
+import { missiles, torpedoes } from '@/stores/missiles.js'
+import SearchSelect from '@/components/inputs/SearchSelect.vue'
 
-import MetricCard from '@/components/cards/MetricCard.vue'
-import Card from '@/components/UI/Card.vue'
-import Chart from '@/components/UI/Chart.vue'
-
-// Chart Data/Methods
-import { barChartOptions } from '@/utils/barGraph.js'
-import { barSeries } from '@/utils/barGraph.js'
-import { pieChartOptions } from '@/utils/pieGraph.js'
-import { pieSeries } from '@/utils/pieGraph.js'
-import { progressGraphOptions } from '@/utils/progressGraph.js'
-import { progressSeries } from '@/utils/progressGraph.js'
-
-import MessagesList from '@/demo/MessagesList.vue'
-// Pinia
-
-// Utils
-// const props = defineProps({})
-// const emit = defineEmits()
+const selectedMissile = ref()
+const selectedTorpedo = ref()
+const distanceToTarget = ref(0)
+const distanceToTargetOptions = [
+    { value: 0, label: '0' },
+    { value: 1000, label: '1000' },
+    { value: 2000, label: '2000' },
+    { value: 3000, label: '3000' },
+    { value: 4000, label: '4000' },
+    { value: 5000, label: '5000' },
+]
 </script>
 
 <template>
     <section
-        class="w-full max-w-[75rem] mx-auto primary-text px-2 font-display flex-col-ic-js"
+        class="w-10/12 max-w-[75rem] h-screen mx-auto primary-text px-2 font-display flex-col-ic-js"
     >
-        <section class="grid w-full grid-cols-2 gap-2 mt-8 md:grid-cols-4">
-            <MetricCard
-                metric-title="Visitors"
-                :metric-value="12078"
-                metric-type="number"
+        <div class="w-2/3 gap-3 flex-is-jc">
+            <SearchSelect
+                v-model.number="distanceToTarget"
+                label="Distance to Target"
+                :options="distanceToTargetOptions"
+                inputType="number"
+                placeholder="Select Distance"
             />
-            <MetricCard
-                metric-title="Revenue"
-                :metric-value="12078"
-                metric-type="currency"
+            <MissileSelect
+                v-model="selectedMissile"
+                label="Select a Missile"
+                :options="missiles"
+                :distance="distanceToTarget"
             />
-            <MetricCard
-                metric-title="Active Users"
-                :metric-value="1245"
-                metric-type="number"
+            <MissileSelect
+                v-model="selectedTorpedo"
+                label="Select a Torpedo"
+                :options="torpedoes"
+                :distance="distanceToTarget"
             />
-
-            <Chart
-                chart-type="radialBar"
-                :chart-options="progressGraphOptions"
-                :chart-series="progressSeries"
-            />
-        </section>
-        <section class="grid w-full grid-cols-1 gap-2 mt-3 md:grid-cols-2">
-            <Chart
-                chart-type="bar"
-                :chart-options="barChartOptions"
-                :chart-series="barSeries"
-            />
-            <Chart
-                chart-type="pie"
-                :chart-options="pieChartOptions"
-                :chart-series="pieSeries.data"
-            />
-        </section>
-        <Card container-class="mt-2">
-            <section class="flex-col-is-js md:flex-ic-js md:flex-row">
-                <MessagesList />
-            </section>
-        </Card>
+        </div>
     </section>
 </template>
