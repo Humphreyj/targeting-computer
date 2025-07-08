@@ -1,21 +1,44 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+// Components
 import MissileSelect from '@/components/inputs/MissileSelect.vue'
 // Data
 import { missiles, torpedoes } from '@/stores/missiles.js'
+import { distanceOptions } from '@/constants/distance.js'
 import SearchSelect from '@/components/inputs/SearchSelect.vue'
+import MissileSimulation from '@/components/missiles/MissileSimulation.vue'
 
 const selectedMissile = ref()
 const selectedTorpedo = ref()
-const distanceToTarget = ref(0)
-const distanceToTargetOptions = [
-    { value: 0, label: '0' },
-    { value: 1000, label: '1000' },
-    { value: 2000, label: '2000' },
-    { value: 3000, label: '3000' },
-    { value: 4000, label: '4000' },
-    { value: 5000, label: '5000' },
-]
+const distanceToTarget = ref(10000)
+const distanceToTargetOptions = distanceOptions
+const timeToTarget = (missile, distance) => {
+    if (distance === 0) return 'N/A'
+    return (distance / missile.linearSpeed).toFixed(2)
+}
+watch(
+    [selectedMissile, selectedTorpedo, distanceToTarget],
+    ([missile, torpedo, distance]) => {
+        if (missile) {
+            selectedMissile.value.timeToTarget = timeToTarget(
+                missile.missile,
+                distance
+            )
+            console.log(
+                `Missile: ${selectedMissile.value.name}, Time to Target: ${selectedMissile.value.timeToTarget} seconds`
+            )
+        }
+        if (torpedo) {
+            selectedTorpedo.value.timeToTarget = timeToTarget(
+                torpedo.missile,
+                distance
+            )
+            console.log(
+                `Torpedo: ${selectedTorpedo.value.name}, Time to Target: ${selectedTorpedo.value.timeToTarget} seconds`
+            )
+        }
+    }
+)
 </script>
 
 <template>
@@ -34,14 +57,17 @@ const distanceToTargetOptions = [
                 v-model="selectedMissile"
                 label="Select a Missile"
                 :options="missiles"
-                :distance="distanceToTarget"
             />
             <MissileSelect
                 v-model="selectedTorpedo"
                 label="Select a Torpedo"
                 :options="torpedoes"
-                :distance="distanceToTarget"
             />
         </div>
+        <MissileSimulation
+            :selected-missile="selectedMissile"
+            :selected-torpedo="selectedTorpedo"
+            :distance="distanceToTarget"
+        />
     </section>
 </template>

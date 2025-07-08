@@ -6,7 +6,6 @@ import SvgComponent from '@/components/UI/SvgComponent.vue'
 import { getStyles } from '@/composables/getStyles'
 
 import selectCaret from '@/assets/SelectCaret.vue'
-import MissileDataCard from '../missiles/MissileDataCard.vue'
 
 const props = defineProps({
     modelValue: [String, Object, Boolean],
@@ -41,10 +40,6 @@ const props = defineProps({
     targetAttr: {
         type: String,
         default: 'value',
-    },
-    distance: {
-        type: Number,
-        default: 0,
     },
 })
 
@@ -148,10 +143,5 @@ const classes = ref(getStyles(props, 'textInput'))
                 </div>
             </div>
         </OnClickOutside>
-        <MissileDataCard
-            v-if="selectedValue.name"
-            :missile="selectedValue"
-            :distance="distance"
-        />
     </section>
 </template>
