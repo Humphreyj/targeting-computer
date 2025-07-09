@@ -135,18 +135,14 @@ const resetSimulation = () => {
 </script>
 
 <template>
-    <div class="w-full border">
-        <Button
-            text="Launch Missile"
-            @click="launchMissiles"
-            :disabled="isLaunched || !selectedMissile.name"
-        />
+    <div class="w-full">
         <Button
             text="Launch Missile Screen"
             @click="launchMissileScreen"
             :disabled="
                 isLaunched || !selectedMissile.name || !selectedTorpedo.name
             "
+            button-class="my-2"
         />
         <Button
             v-if="isLaunched"
@@ -163,22 +159,25 @@ const resetSimulation = () => {
             🚀 Torpedo launched! Missiles launching in
             {{ missileCountdown }} seconds...
         </div>
-
-        <MissileProgress
-            :distance="distance"
-            :ordnance="selectedMissile"
-            :isLaunched="isLaunched && !!launchTime"
-            :launchTime="launchTime"
-            @missile-complete="isLaunched = false"
-            @reset-simulation="resetSimulation"
-        />
-        <MissileProgress
-            :distance="distance"
-            :ordnance="selectedTorpedo"
-            :isLaunched="isLaunched && !!torpedoLaunchTime"
-            :launchTime="torpedoLaunchTime || launchTime"
-            @missile-complete="isLaunched = false"
-            @reset-simulation="resetSimulation"
-        />
+        <div class="w-full gap-3 flex-col-is-jc">
+            <MissileProgress
+                v-if="selectedMissile.name"
+                :distance="distance"
+                :ordnance="selectedMissile"
+                :isLaunched="isLaunched && !!launchTime"
+                :launchTime="launchTime"
+                @missile-complete="isLaunched = false"
+                @reset-simulation="resetSimulation"
+            />
+            <MissileProgress
+                v-if="selectedTorpedo.name"
+                :distance="distance"
+                :ordnance="selectedTorpedo"
+                :isLaunched="isLaunched && !!torpedoLaunchTime"
+                :launchTime="torpedoLaunchTime || launchTime"
+                @missile-complete="isLaunched = false"
+                @reset-simulation="resetSimulation"
+            />
+        </div>
     </div>
 </template>
