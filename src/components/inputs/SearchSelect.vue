@@ -89,13 +89,8 @@ const messages = computed(() => {
 })
 
 const filteredOptions = computed(() => {
-    if (!selectedValue.value) {
-        return props.options
-    }
-
-    return props.options.filter((option) =>
-        option.label.toLowerCase().includes(selectedValue.value.toLowerCase())
-    )
+    // Always return all options - no filtering based on input
+    return props.options
 })
 watchEffect(() => {
     let found = props.options.find((state) => state.value === props.modelValue)

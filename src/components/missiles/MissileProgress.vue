@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed, watch, onUnmounted } from 'vue'
+import { ref, computed, watch, watchEffect, onUnmounted } from 'vue'
+import BasicSelect from '../inputs/BasicSelect.vue'
 
 const props = defineProps({
     distance: {
@@ -22,9 +23,20 @@ const props = defineProps({
 
 const emit = defineEmits(['missile-complete', 'reset-simulation'])
 
+const missileSpeed = computed(() => {
+    return props.ordnance?.missile?.linearSpeed || 0
+})
+
 const progress = ref(0)
 const currentTime = ref(0)
 let progressInterval = null
+const missileCount = ref(1)
+const missileCountOptions = ref([
+    { label: '1', value: 1 },
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
+])
 
 // Calculate progress based on elapsed time vs time to target
 const updateProgress = () => {
@@ -101,14 +113,29 @@ onUnmounted(() => {
         clearInterval(progressInterval)
     }
 })
+
+watchEffect(() => {
+    if (props.ordnance) {
+        console.log(missileSpeed.value)
+    }
+})
 </script>
 
 <template>
     <div class="w-full p-4 border rounded-lg bg-gray-50">
         <div class="mb-4">
-            <h3 class="text-lg font-semibold text-gray-800">
-                {{ ordnance.name || 'No Missile Selected' }}
-            </h3>
+            <div class="gap-3 flex-ic-js">
+                <h3 class="text-lg font-semibold text-gray-800 w-44">
+                    {{ ordnance.name || 'No Missile Selected' }}
+                </h3>
+                <BasicSelect
+                    v-model="missileCount"
+                    :options="missileCountOptions"
+                    container-class="w-24"
+                />
+            </div>
+            <h2 class="text-gray-800">{{ missileSpeed }} m/s</h2>
+
             <div class="grid grid-cols-2 gap-2 mt-2 text-sm text-gray-600">
                 <div>Distance: {{ distance }}m</div>
                 <div v-if="ordnance.timeToTarget">
@@ -132,7 +159,9 @@ onUnmounted(() => {
         <!-- Progress Bar -->
         <div v-if="ordnance.name" class="mb-4">
             <div
-                class="w-full h-8 overflow-hidden bg-gray-200 border rounded-lg"
+                v-for="i in Array(missileCount)"
+                :key="i"
+                class="w-full h-8 my-1 overflow-hidden bg-gray-200 border rounded-lg"
             >
                 <div
                     class="flex items-center justify-center h-full text-sm font-medium text-white transition-all duration-75 ease-linear rounded-lg"

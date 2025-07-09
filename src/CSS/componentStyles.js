@@ -40,12 +40,11 @@ export const componentStyles = {
     },
     textInput: {
         containerClass: 'flex-col-is-js w-full',
-        labelClass:
-            'font-bold text-gray-900 mb-1 dark:text-white dark:opacity-95',
+        labelClass: 'font-bold  mb-1 text-white dark:opacity-95',
         inputClass:
-            'border p-1 border-gray-700 dark:border-gray-600 shadow-md rounded-md w-full dark:bg-gray-700 text-lg primary-text dark:shadow-slate-900',
+            'border p-1 border-gray-700 primary-text dark:border-gray-600 shadow-md rounded-md w-full bg-inputBg text-lg primary-text dark:shadow-slate-900',
         optionsClass:
-            'border absolute bg-appBackground dark:bg-appBackgroundDark border-t-0 overflow-y-scroll border-gray-cool-300 h-32 w-full rounded-lg  z-10 p-1  mt-[-.2rem]',
+            'border absolute bg-inputBg border-t-0 overflow-y-scroll border-gray-cool-300 h-32 w-full rounded-lg  z-10 p-1  mt-[-.2rem]',
         optionClass:
             'rounded-lg primary-text cursor-pointer hover:bg-gray-cool-300',
     },

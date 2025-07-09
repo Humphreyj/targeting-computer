@@ -7,14 +7,15 @@ export default {
     theme: {
         extend: {
             colors: {
-                appBackground: '#FFFAFC',
+                appBackground: '#0F2C3E',
                 appBackgroundDark: '#272d35',
                 sidebarBackground: '#b8d4fc',
                 sidebarBackgroundDark: '#0f172a',
                 cardBackgroundDark: '#0e1f38',
-                primaryText: '#2c3649',
+                primaryText: '#ADD3EB',
                 primaryTextDark: '#edf0f4',
                 secondaryText: '#9399A1',
+                inputBg: '#0A1921',
                 primary: {
                     100: '#a9c3ea',
                     200: '#93b5e5',

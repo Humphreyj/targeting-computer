@@ -43,7 +43,7 @@ watch(
 
 <template>
     <section
-        class="w-10/12 max-w-[75rem] h-screen mx-auto primary-text px-2 font-display flex-col-ic-js"
+        class="w-10/12 max-w-[75rem] h-screen mx-auto primary-text px-2 py-4 font-display flex-col-ic-js gap-3"
     >
         <div class="w-2/3 gap-3 flex-is-jc">
             <SearchSelect
@@ -52,6 +52,7 @@ watch(
                 :options="distanceToTargetOptions"
                 inputType="number"
                 placeholder="Select Distance"
+                label-class="text-white"
             />
             <MissileSelect
                 v-model="selectedMissile"
