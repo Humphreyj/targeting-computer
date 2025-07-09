@@ -136,20 +136,22 @@ const resetSimulation = () => {
 
 <template>
     <div class="w-full">
-        <Button
-            text="Launch Missile Screen"
-            @click="launchMissileScreen"
-            :disabled="
-                isLaunched || !selectedMissile.name || !selectedTorpedo.name
-            "
-            button-class="my-2"
-        />
-        <Button
-            v-if="isLaunched"
-            text="Reset Simulation"
-            @click="resetSimulation"
-            :disabled="!isLaunched"
-        />
+        <div class="w-full flex-ic-jc">
+            <Button
+                text="Launch Missile Screen"
+                @click="launchMissileScreen"
+                :disabled="
+                    isLaunched || !selectedMissile.name || !selectedTorpedo.name
+                "
+                button-class="my-2"
+            />
+            <Button
+                v-if="isLaunched"
+                text="Reset Simulation"
+                @click="resetSimulation"
+                :disabled="!isLaunched"
+            />
+        </div>
 
         <!-- Status indicator for delayed missile launch -->
         <div
