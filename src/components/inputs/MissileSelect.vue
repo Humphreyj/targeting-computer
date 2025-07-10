@@ -62,6 +62,7 @@ const toggleOptions = () => {
 }
 
 const setSelected = (value) => {
+    console.log('Selected value:', value)
     selectedValue.value = value
     emit('update:modelValue', value)
     showOptions.value = false
@@ -69,7 +70,7 @@ const setSelected = (value) => {
 
 const selectedOptionName = computed({
     get: () => {
-        return selectedValue.value.name || 'Select ordnance'
+        return selectedValue?.value?.name || 'Select ordnance'
     },
     set: (value) => {
         return value

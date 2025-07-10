@@ -8,7 +8,7 @@ import { getStyles } from '@/composables/getStyles'
 import selectCaret from '@/assets/SelectCaret.vue'
 
 const props = defineProps({
-    modelValue: [String, Object, Boolean],
+    modelValue: [String, Object, Boolean, Number],
     options: {
         type: Array,
         required: true,

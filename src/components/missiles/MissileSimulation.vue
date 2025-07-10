@@ -6,13 +6,13 @@ import MissileProgress from './MissileProgress.vue'
 
 // Components
 const props = defineProps({
+    ship: {
+        type: Object,
+        default: () => ({}),
+    },
     distance: {
         type: Number,
         default: 0,
-    },
-    selectedMissile: {
-        type: Object,
-        default: () => ({}),
     },
     selectedTorpedo: {
         type: Object,
@@ -53,56 +53,77 @@ const missileCountdown = computed(() => {
     return Math.ceil(remaining)
 })
 
+// Computed property to check if we have valid ordnance selected
+const hasValidOrdnance = computed(() => {
+    const hasActiveMissiles = props.ship.missileLaunchers?.some(
+        (launcher) => launcher.selectedMissile?.name
+    )
+    const hasTorpedo = props.selectedTorpedo?.name
+    return hasActiveMissiles && hasTorpedo
+})
+
 // Cleanup on unmount
 onUnmounted(() => {
     stopTimeTracking()
 })
 
-const launchMissiles = () => {
-    console.log('Missiles launched!')
-    isLaunched.value = true
-    launchTime.value = Date.now()
-}
-
 const launchMissileScreen = () => {
     console.log('Launching missile screen sequence...')
 
-    // Validate we have both missile and torpedo selected
-    if (!props.selectedMissile?.name || !props.selectedTorpedo?.name) {
+    // Validate we have missiles and torpedo selected
+    const activeLaunchers =
+        props.ship.missileLaunchers?.filter(
+            (launcher) => launcher.selectedMissile?.name
+        ) || []
+
+    if (!activeLaunchers.length || !props.selectedTorpedo?.name) {
         console.warn(
-            'Both missile and torpedo must be selected for missile screen'
+            'At least one missile and torpedo must be selected for missile screen'
         )
         return
     }
 
-    // Get time to target for both ordnance (in seconds)
-    const missileTimeToTarget = parseFloat(props.selectedMissile.timeToTarget)
+    // Get time to target for torpedo (in seconds)
     const torpedoTimeToTarget = parseFloat(props.selectedTorpedo.timeToTarget)
 
-    if (
-        missileTimeToTarget === 'N/A' ||
-        torpedoTimeToTarget === 'N/A' ||
-        isNaN(missileTimeToTarget) ||
-        isNaN(torpedoTimeToTarget)
-    ) {
-        console.warn('Invalid time to target values')
+    if (torpedoTimeToTarget === 'N/A' || isNaN(torpedoTimeToTarget)) {
+        console.warn('Invalid torpedo time to target value')
+        return
+    }
+
+    // Find the fastest missile to use for timing calculation
+    let fastestMissileTime = Infinity
+    activeLaunchers.forEach((launcher) => {
+        const missileTimeToTarget = parseFloat(
+            launcher.selectedMissile.timeToTarget
+        )
+        if (
+            !isNaN(missileTimeToTarget) &&
+            missileTimeToTarget < fastestMissileTime
+        ) {
+            fastestMissileTime = missileTimeToTarget
+        }
+    })
+
+    if (fastestMissileTime === Infinity) {
+        console.warn('No valid missile time to target found')
         return
     }
 
     // Calculate delay: missiles should arrive 0.1 seconds before torpedo
     const impactTimeDifference = 0.1 // seconds
     const missileDelay =
-        torpedoTimeToTarget - missileTimeToTarget - impactTimeDifference
+        torpedoTimeToTarget - fastestMissileTime - impactTimeDifference
 
     console.log(`Torpedo time to target: ${torpedoTimeToTarget}s`)
-    console.log(`Missile time to target: ${missileTimeToTarget}s`)
+    console.log(`Fastest missile time to target: ${fastestMissileTime}s`)
     console.log(`Calculated missile delay: ${missileDelay}s`)
 
     if (missileDelay <= 0) {
         console.warn(
-            'Missile is too slow compared to torpedo for this strategy'
+            'Missiles are too slow compared to torpedo for this strategy'
         )
-        // Still execute but missile will launch immediately
+        // Still execute but missiles will launch immediately
     }
 
     // Launch torpedo immediately
@@ -140,9 +161,7 @@ const resetSimulation = () => {
             <Button
                 text="Launch Missile Screen"
                 @click="launchMissileScreen"
-                :disabled="
-                    isLaunched || !selectedMissile.name || !selectedTorpedo.name
-                "
+                :disabled="isLaunched || !hasValidOrdnance"
                 button-class="my-2"
             />
             <Button
@@ -162,15 +181,22 @@ const resetSimulation = () => {
             {{ missileCountdown }} seconds...
         </div>
         <div class="w-full gap-3 flex-col-is-jc">
-            <MissileProgress
-                v-if="selectedMissile.name"
-                :distance="distance"
-                :ordnance="selectedMissile"
-                :isLaunched="isLaunched && !!launchTime"
-                :launchTime="launchTime"
-                @missile-complete="isLaunched = false"
-                @reset-simulation="resetSimulation"
-            />
+            <div
+                v-for="launcher in ship.missileLaunchers"
+                :key="launcher.id"
+                class="w-full"
+            >
+                <MissileProgress
+                    v-if="launcher.selectedMissile.name"
+                    :distance="distance"
+                    :ordnance="launcher.selectedMissile"
+                    :isLaunched="isLaunched && !!launchTime"
+                    :launchTime="launchTime"
+                    @missile-complete="isLaunched = false"
+                    @reset-simulation="resetSimulation"
+                />
+            </div>
+
             <MissileProgress
                 v-if="selectedTorpedo.name"
                 :distance="distance"
