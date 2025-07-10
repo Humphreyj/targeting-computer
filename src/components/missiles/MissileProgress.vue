@@ -19,9 +19,17 @@ const props = defineProps({
         type: Number,
         default: null,
     },
+    missilesArmedCount: {
+        type: Number,
+        default: 1,
+    },
 })
 
-const emit = defineEmits(['missile-complete', 'reset-simulation'])
+const emit = defineEmits([
+    'missile-complete',
+    'reset-simulation',
+    'update-missile-count',
+])
 
 const missileSpeed = computed(() => {
     return props.ordnance?.missile?.linearSpeed || 0
@@ -30,7 +38,7 @@ const missileSpeed = computed(() => {
 const progress = ref(0)
 const currentTime = ref(0)
 let progressInterval = null
-const missileCount = ref(1)
+const missileCount = ref(props.missilesArmedCount)
 const missileCountOptions = ref([
     { label: '1', value: 1 },
     { label: '2', value: 2 },
@@ -86,6 +94,11 @@ watch(
         }
     }
 )
+
+// Watch for missile count changes and emit to parent
+watch(missileCount, (newCount) => {
+    emit('update-missile-count', newCount)
+})
 
 // Computed values for display
 const progressBarStyle = computed(() => ({

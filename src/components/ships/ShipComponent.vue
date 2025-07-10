@@ -7,227 +7,11 @@ import MissileSimulation from '@/components/missiles/MissileSimulation.vue'
 // Data
 import { missiles, torpedoes } from '@/stores/missiles.js'
 import { distanceOptions } from '@/constants/distance.js'
+import { ships } from '@/constants/ships.js'
 const props = defineProps({
     ship: {
         type: Object,
-        default: () => ({
-            manufacturer: 'RSI',
-            model: 'Polaris',
-            missileSize: 3,
-            torpedoSize: 10,
-            missileLaunchers: [
-                {
-                    id: 1,
-                    name: 'Forward Launcher',
-                    selectedMissile: {
-                        type: 'Missile',
-                        subType: 'Missile',
-                        size: 3,
-                        grade: 'A',
-                        name: 'Arrester III',
-                        shortName: 'Arrstr III',
-                        description:
-                            'Using cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.',
-                        physics: {
-                            mass: 119,
-                            temperature: {
-                                enable: false,
-                                initialTemperature: -1,
-                                coolingEqualizationMultiplier: true,
-                                internalTemperatureGeneration: false,
-                                signatureParams: {
-                                    enable: false,
-                                    minimumTemperatureForIR: 250,
-                                    temperatureToIR: 6,
-                                },
-                                itemResourceParams: {
-                                    minOperatingTemperature: 0,
-                                    minCoolingTemperature: 300,
-                                    enableOverheat: false,
-                                    overheatTemperature: 450,
-                                    overheatWarningTemperature: 370,
-                                    overheatRecoveryTemperature: 350,
-                                },
-                            },
-                        },
-                        health: {
-                            hp: 50,
-                            damageResistanceMultiplier: {
-                                physical: 1,
-                                energy: 1,
-                                distortion: 1,
-                                thermal: 1,
-                                biochemical: 0,
-                                stun: 0,
-                            },
-                        },
-                        ref: 'dee6efca-71ef-438c-b762-624f9ce649f3',
-                        distortion: {
-                            decayDelay: 1.5,
-                            decayRate: 40,
-                            maximum: 1000,
-                            warningRatio: 0.75,
-                            recoveryRatio: 0.7,
-                            powerRatioAtMaxDistortion: false,
-                            powerChangeOnlyAtMaxDistortion: true,
-                        },
-                        missile: {
-                            explosionSafetyDistance: 5,
-                            projectileProximity: 1,
-                            armTime: 1.5,
-                            igniteTime: 0.3,
-                            collisionDelayTime: 0.5,
-                            irSignalMinValue: 0,
-                            irSignalMaxValue: 0,
-                            irSignalRiseRate: 0,
-                            irSignalDecayRate: 0,
-                            trackingSignalType: 'CrossSection',
-                            lockSignalAmplifier: 2.5,
-                            lockTime: 1,
-                            lockingAngle: 60,
-                            minRatioForLock: 1,
-                            lockIncreaseRate: 1.3,
-                            lockDecreaseRate: 9999,
-                            lockRangeMin: 1900,
-                            lockRangeMax: 25000,
-                            lockResolutionRadius: 700,
-                            signalResilienceMin: 1,
-                            signalResilienceMax: 1.7,
-                            linearSpeed: 857.5,
-                            fuelTankSize: 50,
-                            maxLifetime: 0,
-                            minRadius: 0.25,
-                            maxRadius: 3,
-                            minPhysRadius: 20,
-                            maxPhysRadius: 25,
-                            hitType: 'explosion',
-                            damage: {
-                                damagePhysical: 2526.42,
-                                damageEnergy: 0,
-                                damageDistortion: 0,
-                                damageThermal: 0,
-                                damageBiochemical: 0,
-                                damageStun: 0,
-                            },
-                        },
-                        manufacturerData: {
-                            calculatorType: 'manufacturer',
-                            data: {
-                                nameSmall: 'FSKI',
-                                ref: '5f81335d-44e6-4104-841e-c5af9df06829',
-                                name: 'FireStorm Kinetics',
-                                calculatorName: 'FSKI',
-                            },
-                        },
-                    },
-                },
-                {
-                    id: 2,
-                    name: 'Missile Turret',
-                    selectedMissile: {
-                        type: 'Missile',
-                        subType: 'Missile',
-                        size: 3,
-                        grade: 'A',
-                        name: 'Arrester III',
-                        shortName: 'Arrstr III',
-                        description:
-                            'Using cross section targeting to hunt for its prey, the Firestorm Arrester proximity missile makes quick work of enemies caught in the crosshairs.',
-                        physics: {
-                            mass: 119,
-                            temperature: {
-                                enable: false,
-                                initialTemperature: -1,
-                                coolingEqualizationMultiplier: true,
-                                internalTemperatureGeneration: false,
-                                signatureParams: {
-                                    enable: false,
-                                    minimumTemperatureForIR: 250,
-                                    temperatureToIR: 6,
-                                },
-                                itemResourceParams: {
-                                    minOperatingTemperature: 0,
-                                    minCoolingTemperature: 300,
-                                    enableOverheat: false,
-                                    overheatTemperature: 450,
-                                    overheatWarningTemperature: 370,
-                                    overheatRecoveryTemperature: 350,
-                                },
-                            },
-                        },
-                        health: {
-                            hp: 50,
-                            damageResistanceMultiplier: {
-                                physical: 1,
-                                energy: 1,
-                                distortion: 1,
-                                thermal: 1,
-                                biochemical: 0,
-                                stun: 0,
-                            },
-                        },
-                        ref: 'dee6efca-71ef-438c-b762-624f9ce649f3',
-                        distortion: {
-                            decayDelay: 1.5,
-                            decayRate: 40,
-                            maximum: 1000,
-                            warningRatio: 0.75,
-                            recoveryRatio: 0.7,
-                            powerRatioAtMaxDistortion: false,
-                            powerChangeOnlyAtMaxDistortion: true,
-                        },
-                        missile: {
-                            explosionSafetyDistance: 5,
-                            projectileProximity: 1,
-                            armTime: 1.5,
-                            igniteTime: 0.3,
-                            collisionDelayTime: 0.5,
-                            irSignalMinValue: 0,
-                            irSignalMaxValue: 0,
-                            irSignalRiseRate: 0,
-                            irSignalDecayRate: 0,
-                            trackingSignalType: 'CrossSection',
-                            lockSignalAmplifier: 2.5,
-                            lockTime: 1,
-                            lockingAngle: 60,
-                            minRatioForLock: 1,
-                            lockIncreaseRate: 1.3,
-                            lockDecreaseRate: 9999,
-                            lockRangeMin: 1900,
-                            lockRangeMax: 25000,
-                            lockResolutionRadius: 700,
-                            signalResilienceMin: 1,
-                            signalResilienceMax: 1.7,
-                            linearSpeed: 857.5,
-                            fuelTankSize: 50,
-                            maxLifetime: 0,
-                            minRadius: 0.25,
-                            maxRadius: 3,
-                            minPhysRadius: 20,
-                            maxPhysRadius: 25,
-                            hitType: 'explosion',
-                            damage: {
-                                damagePhysical: 2526.42,
-                                damageEnergy: 0,
-                                damageDistortion: 0,
-                                damageThermal: 0,
-                                damageBiochemical: 0,
-                                damageStun: 0,
-                            },
-                        },
-                        manufacturerData: {
-                            calculatorType: 'manufacturer',
-                            data: {
-                                nameSmall: 'FSKI',
-                                ref: '5f81335d-44e6-4104-841e-c5af9df06829',
-                                name: 'FireStorm Kinetics',
-                                calculatorName: 'FSKI',
-                            },
-                        },
-                    },
-                },
-            ],
-        }),
+        default: () => ships[0], // Default to the first ship in the list
     },
     leadShip: {
         type: Boolean,
@@ -351,6 +135,29 @@ const timeToTarget = (missile, distance) => {
     return (distance / missile.linearSpeed).toFixed(2)
 }
 
+const missilesInSalvo = computed(() => {
+    // Check if the ship has missile launchers
+    if (
+        !ship.value.missileLaunchers ||
+        ship.value.missileLaunchers.length === 0
+    ) {
+        return 0
+    }
+
+    // Count only missiles from launchers (excluding torpedoes)
+    return ship.value.missileLaunchers.reduce((count, launcher) => {
+        // Only count if a missile is selected and we have armed missiles
+        if (launcher.selectedMissile && launcher.selectedMissile.name) {
+            const armedCount =
+                typeof launcher.missilesArmedCount === 'number'
+                    ? launcher.missilesArmedCount
+                    : 1
+            return count + armedCount
+        }
+        return count
+    }, 0)
+})
+
 // Watchers
 watch(
     [() => ship.value.missileLaunchers, selectedTorpedo, distanceToTarget],
@@ -363,9 +170,7 @@ watch(
                         launcher.selectedMissile.missile,
                         distance
                     )
-                    console.log(
-                        `${launcher.name} - Missile: ${launcher.selectedMissile.name}, Time to Target: ${launcher.selectedMissile.timeToTarget} seconds`
-                    )
+                    console.log(`${launcher.name} - ${launcher.missilesArmed}`)
                 }
             })
         }
@@ -380,9 +185,24 @@ watch(
                 `Torpedo: ${selectedTorpedo.value.name}, Time to Target: ${selectedTorpedo.value.timeToTarget} seconds`
             )
         }
+
+        // Log missiles in salvo for debugging
+        console.log('Total missiles in salvo:', missilesInSalvo.value)
     },
     { deep: true, immediate: true }
 )
+
+watch(
+    () => ship,
+    (newShip) => {
+        console.log('Ship updated:', ship.value)
+    },
+    { immediate: true }
+)
+const updateShip = (newShip) => {
+    ship.value = newShip
+    console.log('Ship updated:', ship.value)
+}
 </script>
 
 <template>
@@ -412,10 +232,19 @@ watch(
                 :options="torpedoes"
             />
         </div>
+        <div class="mt-4">
+            <h3 class="text-lg font-semibold">
+                Missiles in Salvo: {{ missilesInSalvo }}
+            </h3>
+            <p class="text-sm text-gray-500">
+                Total missiles armed across all launchers.
+            </p>
+        </div>
         <MissileSimulation
             :ship="ship"
             :selected-torpedo="selectedTorpedo"
             :distance="distanceToTarget"
+            :update-ship="updateShip"
         />
     </main>
 </template>

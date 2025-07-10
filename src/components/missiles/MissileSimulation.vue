@@ -18,6 +18,10 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    updateShip: {
+        type: Function,
+        default: () => {},
+    },
 })
 
 // State management for missile launch
@@ -145,6 +149,17 @@ const launchMissileScreen = () => {
     }, delayMs)
 }
 
+const updateMissileCount = (launcherId, count) => {
+    // Find the launcher and update its missilesArmedCount
+    const launcher = props.ship.missileLaunchers?.find(
+        (l) => l.id === launcherId
+    )
+    if (launcher) {
+        launcher.missilesArmedCount = count
+        console.log(`Updated launcher ${launcherId} missile count to ${count}`)
+    }
+}
+
 const resetSimulation = () => {
     isLaunched.value = false
     launchTime.value = null
@@ -192,6 +207,10 @@ const resetSimulation = () => {
                     :ordnance="launcher.selectedMissile"
                     :isLaunched="isLaunched && !!launchTime"
                     :launchTime="launchTime"
+                    :missiles-armed-count="launcher.missilesArmedCount"
+                    @update-missile-count="
+                        (count) => updateMissileCount(launcher.id, count)
+                    "
                     @missile-complete="isLaunched = false"
                     @reset-simulation="resetSimulation"
                 />

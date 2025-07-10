@@ -62,9 +62,9 @@ const toggleOptions = () => {
 }
 
 const setSelected = (value) => {
-    console.log(props.targetAttr)
     selectedValue.value = value.label
 
+    console.log(value[props.targetAttr])
     emit('update:modelValue', value[props.targetAttr])
     showOptions.value = false
 }
